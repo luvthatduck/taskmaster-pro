@@ -104,13 +104,22 @@ $(".list-group").on("click", "span", function () {
   // swap out elements
   $(this).replaceWith(dateInput);
 
+  // enable jquery ui datepicker
+  dateInput.datepicker({
+    minDate: 1,
+    onClose: function() {
+      //when calendar is closed, force a change even on the dateInput
+      $(this).trigger("change");
+    }
+  });
+
   // automatically focus on new element
   dateInput.trigger("focus");
 });
 
 
 // value of due date was changed
-$(".list-group").on("blur", "input[type='text']", function () {
+$(".list-group").on("change", "input[type='text']", function () {
   // get current text
   var date = $(this)
     .val()
@@ -224,16 +233,16 @@ $(".card .list-group").sortable({
     });
 
     $("#trash").droppable({
-      accept: ".card .list-group-item", 
-      tolerance: "touch", 
-      drop: function(event, ui) {
-        console.log("drop"); 
+      accept: ".card .list-group-item",
+      tolerance: "touch",
+      drop: function (event, ui) {
+        console.log("drop");
         ui.draggable.remove();
       },
-      over: function(event, ui) {
+      over: function (event, ui) {
         console.log("over");
-      }, 
-      out: function(event, ui) {
+      },
+      out: function (event, ui) {
         console.log("out");
       }
 
@@ -249,6 +258,11 @@ $(".card .list-group").sortable({
     saveTasks();
   }
 });
+
+$("#modalDueDate").datepicker({
+  minDate: 1
+});
+
 
 
 // load tasks for the first time
